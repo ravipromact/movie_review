@@ -6,6 +6,7 @@ class Login extends Component{
     constructor(props){
         super(props)
         this.state={
+            name:null,
             email:null,
             password:null,
             formErrors:{
@@ -21,12 +22,39 @@ class Login extends Component{
     }
     handleLoggin(){
         
-        const user = JSON.parse(localStorage.getItem('user'))
-        if(this.emailInput.value === user.email && this.passwordInput.value === user.password ){
-            this.props.triggerUpdate(true);
+        const users = JSON.parse(localStorage.getItem('user'))
+        //const {name,email} = this.state
+        const found = users.some(el =>{
+            return el.email === this.emailInput.value && el.password === this.passwordInput.value
+         })
+         if (found){
+            localStorage.setItem('isLoggedIn',true)
+            var loggedIn = localStorage.getItem('isLoggedIn')
+            this.props.triggerUpdate(loggedIn);
+            alert('Log in Success')
         }else{
-            alert('Invalid Credentials')
+            alert('Invalid Credential')
         }
+
+        // if(this.emailInput.value === user[i].email && this.passwordInput.value === user[i].password ){
+        //     localStorage.setItem('isLoggedIn',true)
+        //     var loggedIn = localStorage.getItem('isLoggedIn')
+        //     this.props.triggerUpdate(loggedIn);
+        //     alert('Log in Success')
+        // }else{
+        //     alert('Invalid Credential')
+        // }
+        // for(var i=0;i<user.length;i++){
+            
+        // }
+        // if(this.emailInput.value === user.email && this.passwordInput.value === user.password ){
+        //     localStorage.setItem('isLoggedIn',true)
+        //     var loggedIn = localStorage.getItem('isLoggedIn')
+        //     this.props.triggerUpdate(loggedIn);
+        //     alert('Log in Success')
+        // }else{
+        //     alert('Invalid Credentials')
+        // }
       }
     render(){
         

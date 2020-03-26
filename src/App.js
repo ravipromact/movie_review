@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,Link
 } from "react-router-dom";
 import Registeration from './components/register/register'
 import Login from './components/login/login'
@@ -13,7 +13,8 @@ class App extends Component{
   constructor(props){
     super(props)
     this.state={
-      isLoggedIn:false
+      isLoggedIn:JSON.parse(localStorage.getItem('isLoggedIn')),
+      userProfile:JSON.parse(localStorage.getItem('user'))
     }
     this.handleLoggin = this.handleLoggin.bind(this)
   }
@@ -21,6 +22,12 @@ class App extends Component{
   handleLoggin(val){
     this.setState({
       isLoggedIn:val
+    })
+  }
+  signOut = ()=>{
+    localStorage.setItem('isLoggedIn',JSON.stringify(false))
+    this.setState({
+      isLoggedIn:false
     })
   }
 
@@ -32,29 +39,17 @@ class App extends Component{
         (
           <Router>
           <div>
-            {/* <nav>
+            <nav>
               <ul>
                 <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/login">Login</Link>
-                </li>
-                <li>
-                <Link to="/register">Register</Link>
+                  <button className="btn btn-danger" onClick={this.signOut}>Sign out</button>
                 </li>
               </ul>
-            </nav> */}
+            </nav>
     
             {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
             <Switch>
-              {/* <Route path="/register">
-                <Registeration />
-              </Route>
-              <Route path="/login">
-                <Login/>
-              </Route> */}
               <Route path="/">
                 <Home />
               </Route>
