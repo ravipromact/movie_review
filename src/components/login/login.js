@@ -6,6 +6,7 @@ class Login extends Component{
     constructor(props){
         super(props)
         this.state={
+            users:[],
             name:null,
             email:null,
             password:null,
@@ -16,13 +17,19 @@ class Login extends Component{
         }
         this.handleLoggin = this.handleLoggin.bind(this)
     }
+    componentWillMount () {
+        if(localStorage.getItem('user')){
+            this.setState({
+                users:JSON.parse(localStorage.getItem('user'))
+            })
+        }
+    }
     handleSubmit = (e)=>{
-        e.preventDefault()
-        
+        e.preventDefault()        
     }
     handleLoggin(){
         
-        const users = JSON.parse(localStorage.getItem('user'))
+        let {users} = this.state 
         //const {name,email} = this.state
         const found = users.some(el =>{
             return el.email === this.emailInput.value && el.password === this.passwordInput.value
