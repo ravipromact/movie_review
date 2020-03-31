@@ -1,41 +1,26 @@
 import React,{Component}  from 'react';
-import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import './home.css'
 const movies = [
     {name:'Bloodshot', poster:'bloodshot',year:'2020'},
     {name:'Birds of Prey', poster:'birds_of_prey',year:'2020'},
-    {name:'1917', poster:'1917',year:'2019'}
+    {name:'1917', poster:'1917',year:'2019'},
+    {name:'Black Widow', poster:'black_widow',year:'2020'},
+    {name:'The Irishman', poster:'irishman',year:'2019'},
+    {name:'Jumanji: The next Level', poster:'jumanji',year:'2019'},
+    {name:'Justice League', poster:'Justice_league',year:'2017'},
+    {name:'Shazam', poster:'shazam',year:'2019'}
 ]
-// const reviews = [
-//     {name:'Bloodshot', reviews:[
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'}
-//     ]},
-//     {name:'Birds of Prey', reviews:[
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'}
-//     ]},
-//     {name:'1917', reviews:[
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'},
-//         {title:'Excellent!',comment:'One word , what a movie man!'}
-//     ]}
-// ]
+
 localStorage.setItem('movies',JSON.stringify(movies))
-//localStorage.setItem('reviews',JSON.stringify(reviews))
 class Home extends Component{
     
     constructor(props){
         super(props)
         
         this.state={
+            userProfile:JSON.parse(localStorage.getItem('userProfile')),
             movies:JSON.parse(localStorage.getItem('movies')),
             reviews:[],
             show:null,
@@ -49,75 +34,181 @@ class Home extends Component{
                 reviews:JSON.parse(localStorage.getItem('reviews'))
             })
         }
+        //console.log('Logged In User: ', this.state.userProfile[0].name+' '+this.state.userProfile[0].email)
     }
      handleClose = (e)=>{
-        this.setState({show: e.target.id})
+        this.setState({show: false})
      }
      handleShow = (e)=>{
         this.setState({show: e.target.id})
      }
     handleReview = (e)=>{
+     
         e.preventDefault()
-        let {title,comment} = this.state;
-        let reviewData = []
-        for(var i=0;i<=reviewData.length;i++){
-            if(!localStorage.getItem('reviews')){
-                alert('adding review')
-                let reviews = [ ]
-                // if(reviews[0].reviews[0].title === null && reviews[0].reviews[0].title){
-                //     alert('Empty Review')
-                // }
-                if(this.state.title === '' || this.state.comment === '' ){
-                    alert('Please add a review')
-                }else{
-                   alert('Review added')
-                   //reviews[i].name = e.target.id;
-                   //reviews[i].reviews = [{title:'',comment:''}]
+        let {title,comment,userProfile} = this.state;
+        //alert(reviewData.length)
+        // for(var i=0;i<reviewData.length;i++){
 
-                   reviews.push({name:e.target.id,reviews:[{title:title,comment:comment}]})
-                    //reviews[i].reviews.push({title:title,comment:comment})
+            
+        // }
 
 
 
-                    localStorage.setItem('reviews',JSON.stringify(reviews))
-                    // for(var i = 0; i< this.state.reviews.length;i++){
-                    //     let {reviews} = this.state
-                    //     if(reviews[i].name === e.target.id){
-                    //         alert(' working')  
-                    //         reviews[i].reviews.push({title:title,comment:comment})
-                    //         localStorage.setItem('reviews',JSON.stringify(reviews))
-                    //     }
-                    // }
-                    //localStorage.setItem('reviews',JSON.stringify(reviews))
-                    this.setState({reviews:reviews})
-                }
-
-
+        if(!localStorage.getItem('reviews')){
+            let reviews = [ ]
+            
+            if(this.state.title === '' || this.state.comment === '' ){
+                alert('Please add a review')
                 
             }else{
-                alert('Else block')
-                let reviews = this.state.reviews
-                if(reviews[i].name !== e.target.id ){
-                    if(this.state.title === '' || this.state.comment === '' ){
-                        alert('Pleas add a review')
-                        
-                    }else{
-                        alert('Review Added')
-                        reviews.push({name:e.target.id,reviews:[{title:title,comment:comment}]})                    
-                        localStorage.setItem('reviews',JSON.stringify(reviews))  
-                        this.setState({reviews:reviews})
-                    }
-                    
-                }else{
-                    alert('Review already exist')
-                }
-                
-                // if(reviews[i].reviews[i].title === '' && reviews[i].reviews[i].comment === ''){
-                //     alert('Empty Review')
-                    
-                // }
+               alert('Review added')
+               reviews.push({name:e.target.id,reviews:[
+                   {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment}]})
+                localStorage.setItem('reviews',JSON.stringify(reviews))
+                this.setState({reviews:reviews})
+                console.log('Review added',reviews)
+                this.titleInput.value=''
+                    this.commentInput.value=''
                 
             }
+            
+        }else{
+            let reviews = this.state.reviews
+            //let reviewContent = this.state.reviews[i].reviews
+                //console.log('Else Review added', reviews[i].email)
+            if(this.state.title === '' || this.state.comment === '' ){
+                alert('Please add a review')
+                
+            }else{
+                //const result = reviews.filter(word => word).map(el => el.reviews[0].email)
+                
+                var value = e.target.id;
+                if (reviews.filter(e => e.name === value).length > 0) {
+                    /* vendors contains the element we're looking for */
+                    //alert('review Exist for movie '+ value)
+                    const result = reviews.filter(item => item.name === value);
+                    const found = result[0].reviews.some(el =>{
+                        return el.email === userProfile[0].email
+                    })
+                    //console.log(result[0].reviews)
+                    if(found){
+                        alert('review Exist of user '+userProfile[0].email)
+                    }else{
+                        alert('Review added for movie '+ value)
+                        result[0].reviews.push({reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment})
+                        localStorage.setItem('reviews',JSON.stringify(reviews))  
+                        this.setState({reviews:reviews})
+                        this.titleInput.value=''
+                        this.commentInput.value=''
+                    }
+               // console.log('user Exist: '+ found)
+                      //console.log(inner)
+                    // if(inner.includes(userProfile[0].email)){
+                    //     alert('review Exist of user '+userProfile[0].email)
+                    // }else{
+                    //     alert('No review of user '+userProfile[0].email)
+                        
+                    //     filteredList[0].reviews.push({reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment})
+                    //     localStorage.setItem('reviews',JSON.stringify(reviews))  
+                    //     this.setState({reviews:reviews})
+                    //     console.log(filteredList[0].reviews)
+                    // }
+                    //console.log(inner.includes(userProfile[0].email) +" "+inner+" contains "+userProfile[0].email);
+                }else{
+                    alert('Review added for movie '+ value)
+                    reviews.push({name:e.target.id,reviews:[
+                    {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment}]})
+                    localStorage.setItem('reviews',JSON.stringify(reviews))  
+                    this.setState({reviews:reviews})
+                    this.titleInput.value=''
+                    this.commentInput.value=''
+                    
+                    // if(inner.includes(userProfile[0].email)){
+                    //     alert('review Exist of user '+userProfile[0].email)
+                    // }else{
+                    //     alert('No review of user '+userProfile[0].email)
+                    // }
+                    
+                }
+                //console.log(value)
+                // if(reviews.includes(e.target.id)){
+                //     alert('true')
+                // }else{
+                //     alert('false')
+                // }
+                
+                
+                // if(result.includes(userProfile[0].email)){
+                //     alert('Exist')
+                //     alert(e.target.id)
+                // }else{alert('No exist')}
+
+
+                // var filteredArray = reviews
+                // .filter(element => element.reviews
+                // .some(review => review.email === userProfile[0].email)
+                // )
+                // .map(element => {
+                // let n = element.reviews.filter(
+                //     subElement => subElement.email === userProfile[0].email
+                // )
+                // return n[0].email;
+                // })
+           
+                
+               // for(let j=0;j<reviewContent.length;j++){
+                //    alert(userProfile[0].email +" "+  reviewContent[j].email)
+                //    if(userProfile[0].email !==  reviewContent[j].email){
+                //     reviews.push({name:e.target.id,reviews:[
+                //             {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment}]})
+                //             localStorage.setItem('reviews',JSON.stringify(reviews))  
+                //             this.setState({reviews:reviews})
+                //    }
+                    // if(userProfile[0].email ===  reviewContent[i].email && reviews[i].name === e.target.id){
+                    //     alert("Exist")
+                    //     alert(reviewContent[i].email)
+                    // }else{
+                    //     alert('Not Exist')
+                    //     reviews.push({name:e.target.id,reviews:[
+                    //     {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment}]})
+                    //     localStorage.setItem('reviews',JSON.stringify(reviews))  
+                    //     this.setState({reviews:reviews})
+                    // }
+               // }
+                
+
+                // if(userProfile[0].email ===  reviewContent[i].email && reviews[i].name === e.target.id){
+                //     alert('review Exist')
+                // }else{
+                //     if(reviews[i].name === e.target.id){
+                //         alert('review exist')
+                //     }else{
+                //         reviews.push({name:e.target.id,reviews:[{title:title,comment:comment}]})
+                //         localStorage.setItem('reviews',JSON.stringify(reviews))  
+                //         this.setState({reviews:reviews})
+                //     }
+                    
+                // }
+
+
+                // if(reviews[i].name !== e.target.id ){
+                //     if(this.state.title === '' || this.state.comment === '' ){
+                //         alert('Pleas add a review')
+                        
+                //     }else{
+                //         alert('Review Added')
+                //         reviews.push({name:e.target.id,reviews:[{title:title,comment:comment}]})                    
+                //         localStorage.setItem('reviews',JSON.stringify(reviews))  
+                //         this.setState({reviews:reviews})
+                //     }
+                    
+                // }else{
+                //     alert('Review already exist')
+                // }
+            }
+            
+            
+            
         }
         
 
@@ -144,31 +235,29 @@ class Home extends Component{
         
         
         return(
-            <div className="container" ref={this.wrapper}>
-                <h2>Home</h2>
+            <div className="container section-pad" ref={this.wrapper}>
+                <h2 className="text-white">Movies</h2>
                 <div className="row">
                     {this.state.movies.map((movie,i) => {
                         return(
                             
-                            <div className="col-12" key={movie.name}>
-                                <div className="media">
-                                    <img src={require(`../../assests/img/${movie.poster}.jpg`)} alt='movie poster' width="200" className="mr-3" />
-                                    <div className="media-body">
-                                        <h5 className="mt-0">{movie.name} ({movie.year})</h5>
-                                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                                    </div>
-                                </div>
-                                <form id={movie.name} onSubmit={this.handleReview} className="mt-5">
-                                        <div className="form-group">
-                                            <input type="text" ref={titleInput => this.titleInput = titleInput} name="title" onChange={this.handleChange} className="form-control" placeholder="Title"/>
-                                        </div>
-                                        <div className="form-group">
-                                            <textarea rows="4" ref={commentInput => this.commentInput = commentInput} name="comment" onChange={this.handleChange} className="form-control" placeholder="Comment..."></textarea>
-                                        </div>
-                                        <button type="submit" className="btn btn-primary">Submit</button>
-                                    </form>
-                                <div>
-                                    <ul>
+                            <div className="col-md-3 mt-5" key={movie.name}>
+                                <img src={require(`../../assests/img/${movie.poster}.jpg`)} alt='movie poster' className="img-thumbnail rounded p-2 img-fluid movie-poster w-100"/>
+                                <h6 className="movie-title text-center mt-2">{movie.name} ({movie.year})</h6>
+                                <Button id={movie.name+'-'+0} className="w-100" onClick={this.handleShow}>
+                                All Reviews
+                                </Button>
+                                <Button id={movie.name} className="w-100 mt-2" onClick={this.handleShow}>
+                                Review this Title
+                                </Button>
+                                
+                                <Modal show={this.state.show === movie.name+'-'+0} onHide={this.handleClose}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Reviews for {movie.name}</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                    
+                                    <ul className="list-unstyled">
                                         {this.state.reviews.map((review,j)=>{
                                             return(
                                             <div key={j}>
@@ -176,9 +265,13 @@ class Home extends Component{
                                                 <div>
                                                     {review.reviews.map((rev,k)=>{
                                                         return(
-                                                            <li key={k}>
-                                                                {rev.title}
-                                                                {rev.comment}
+                                                            <li className="media border rounded p-3" key={k}>
+                                                                <img className="mr-3 rounded-circle" width="35" src={require(`../../assests/img/avatar.png`)} alt="Generic"/>
+                                                                <div className="media-body">
+                                                                <h6 className="mt-0 mb-1">{rev.title}</h6>
+                                                                <p className="mb-1">{rev.comment}</p>
+                                                                <footer className="blockquote-footer"> <cite title="Source Title">Review by {rev.reviewer}, email: {rev.email}</cite></footer>
+                                                                </div>
                                                             </li>
                                                         )
                                                     })}
@@ -188,26 +281,23 @@ class Home extends Component{
                                             )
                                         })}
                                     </ul>
-                                </div>
-                                
-                                <Button id={movie.name} variant="primary" onClick={this.handleShow}>
-                                Launch demo modal
-                                </Button>
+                                    </Modal.Body>
+                                </Modal> 
                                 <Modal show={this.state.show === movie.name} onHide={this.handleClose}>
                                     <Modal.Header closeButton>
-                                        <Modal.Title>{movie.name}</Modal.Title>
+                                        <Modal.Title>Add {movie.name}</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
-                                    
+                                    <form id={movie.name} onSubmit={this.handleReview}>
+                                        <div className="form-group">
+                                            <input type="text" ref={titleInput => this.titleInput = titleInput} name="title" onChange={this.handleChange} className="form-control" placeholder="Title"/>
+                                        </div>
+                                        <div className="form-group">
+                                            <textarea rows="4" ref={commentInput => this.commentInput = commentInput} name="comment" onChange={this.handleChange} className="form-control" placeholder="Comment..."></textarea>
+                                        </div>
+                                        <button type="submit" className="btn btn-primary">Submit</button>
+                                    </form>
                                     </Modal.Body>
-                                    <Modal.Footer>
-                                        <Button variant="secondary" onClick={this.handleClose}>
-                                        Close
-                                        </Button>
-                                        <Button variant="primary" onClick={this.handleClose}>
-                                        Save Changes
-                                        </Button>
-                                    </Modal.Footer>
                                 </Modal>                               
                             </div>
                         )

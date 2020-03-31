@@ -96,8 +96,9 @@ class Registeration extends Component{
             <div className="container">
                 
                 <div className="col-12">
-                <h2>Register</h2>
-                    <form onSubmit={this.handleSubmit}>
+                
+                    <form onSubmit={this.handleSubmit} className="form-bg mx-auto mt-5">
+                        <h3 className="mb-3">Register</h3>
                         <div className="form-group">
                             <label htmlFor="inputName">Name</label>
                             <input type="text" ref={nameInput => this.nameInput = nameInput} name="name" className={`form-control ${formErrors.name.length>0?"border-danger":null}`} onChange={this.handleChange} id="inputName" placeholder="Name" />
@@ -120,7 +121,7 @@ class Registeration extends Component{
                             }
                         </div>
                         <button type="submit" disabled={!enabled} className="btn btn-primary">Sign up</button>
-                        <p>Already Registered? <Link to="/">Sign in</Link></p>
+                        <p className="mb-0 mt-3">Already Registered? <Link to="/">Sign in</Link></p>
                     </form>
                 </div>
             </div>

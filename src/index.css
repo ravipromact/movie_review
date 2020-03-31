@@ -1,5 +1,7 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 body {
   margin: 0;
+  background: #02141c !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -11,3 +13,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.section-pad{
+  padding-top: 50px;padding-bottom: 50px;
+}
+.form-bg{
+  background: #02141c;
+  border: 1px solid #535353;
+  padding: 22px;
+  border-radius: 4px;
+  max-width: 500px;
+  color: #fff;
+}
+
+
+

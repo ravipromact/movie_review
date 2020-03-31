@@ -6,6 +6,7 @@ class Login extends Component{
     constructor(props){
         super(props)
         this.state={
+            userProfile:'',
             users:[],
             name:null,
             email:null,
@@ -36,6 +37,15 @@ class Login extends Component{
          })
          if (found){
             localStorage.setItem('isLoggedIn',true)
+            users.some(el =>{
+                if(el.email === this.emailInput.value)
+                {
+                    var userName =[]
+                    userName.push({name: el.name,email:el.email})                    
+                    localStorage.setItem('userProfile',JSON.stringify(userName))
+                }  
+             })
+            //localStorage.setItem('userProfile',userName)
             var loggedIn = localStorage.getItem('isLoggedIn')
             this.props.triggerUpdate(loggedIn);
             alert('Log in Success')
@@ -68,8 +78,9 @@ class Login extends Component{
         
         return(
             <div className="container">
-                <h2>Login</h2>
-                <form onSubmit={this.handleSubmit}>
+                
+                <form onSubmit={this.handleSubmit} className="form-bg mx-auto mt-5">
+                    <h3 className="mb-3">Sign in</h3>
                     <div className="form-group">
                         <label htmlFor="inputEmail">Email</label>
                         <input type="email" ref={emailInput => this.emailInput = emailInput} name="email" className="form-control" id="inputEmail" placeholder="Email" />
@@ -79,8 +90,9 @@ class Login extends Component{
                         <input type="password" ref={passwordInput => this.passwordInput = passwordInput} name="password" className="form-control" id="inputPassword" placeholder="Password" />                        
                     </div>
                     <button type="submit" onClick={this.handleLoggin} className="btn btn-primary">Sign in</button>
+                    <p className="mb-0 mt-3">Don't have account <Link to="/register">Sign up</Link></p>
                 </form>
-                <p>Don't have account <Link to="/register">Sign up</Link></p>
+                
             </div>
         )
     }
