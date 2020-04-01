@@ -1,0 +1,10 @@
+[
+    {"id":"Bloodshot","name":"Bloodshot", "poster":"bloodshot","year":"2020"},
+    {"id":"Birds_of_Prey","name":"Birds of Prey", "poster":"birds_of_prey","year":"2020"},
+    {"id":"1917","name":"1917", "poster":"1917","year":"2019"},
+    {"id":"Black_Widow","name":"Black Widow", "poster":"black_widow","year":"2020"},
+    {"id":"The_Irishman","name":"The Irishman", "poster":"irishman","year":"2019"},
+    {"id":"Jumanji_The_next_Level","name":"Jumanji: The next Level", "poster":"jumanji","year":"2019"},
+    {"id":"Justice_League","name":"Justice League", "poster":"Justice_league","year":"2017"},
+    {"id":"Shazam","name":"Shazam", "poster":"shazam","year":"2019"}
+]

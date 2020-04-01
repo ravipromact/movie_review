@@ -1,24 +1,27 @@
 import React,{Component}  from 'react';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import movies from '../../movies.json'
+import {
+    Link
+  } from "react-router-dom";
 import './home.css'
-const movies = [
-    {name:'Bloodshot', poster:'bloodshot',year:'2020'},
-    {name:'Birds of Prey', poster:'birds_of_prey',year:'2020'},
-    {name:'1917', poster:'1917',year:'2019'},
-    {name:'Black Widow', poster:'black_widow',year:'2020'},
-    {name:'The Irishman', poster:'irishman',year:'2019'},
-    {name:'Jumanji: The next Level', poster:'jumanji',year:'2019'},
-    {name:'Justice League', poster:'Justice_league',year:'2017'},
-    {name:'Shazam', poster:'shazam',year:'2019'}
-]
+// const movies = [
+//     {id:'Bloodshot',name:'Bloodshot', poster:'bloodshot',year:'2020'},
+//     {id:'Birds_of_Prey',name:'Birds of Prey', poster:'birds_of_prey',year:'2020'},
+//     {id:'1917',name:'1917', poster:'1917',year:'2019'},
+//     {id:'Black_Widow',name:'Black Widow', poster:'black_widow',year:'2020'},
+//     {id:'The_Irishman',name:'The Irishman', poster:'irishman',year:'2019'},
+//     {id:'Jumanji_The_next_Level',name:'Jumanji: The next Level', poster:'jumanji',year:'2019'},
+//     {id:'Justice_League',name:'Justice League', poster:'Justice_league',year:'2017'},
+//     {id:'Shazam',name:'Shazam', poster:'shazam',year:'2019'}
+// ]
 
 localStorage.setItem('movies',JSON.stringify(movies))
 class Home extends Component{
     
     constructor(props){
         super(props)
-        
         this.state={
             userProfile:JSON.parse(localStorage.getItem('userProfile')),
             movies:JSON.parse(localStorage.getItem('movies')),
@@ -242,16 +245,19 @@ class Home extends Component{
                         return(
                             
                             <div className="col-md-3 mt-5" key={movie.name}>
+                                <Link to={{pathname:`${this.state.movies[i].id}`,aboutProps:this.state.movies[i]}}>
                                 <img src={require(`../../assests/img/${movie.poster}.jpg`)} alt='movie poster' className="img-thumbnail rounded p-2 img-fluid movie-poster w-100"/>
+                                                                </Link>
+                                
                                 <h6 className="movie-title text-center mt-2">{movie.name} ({movie.year})</h6>
-                                <Button id={movie.name+'-'+0} className="w-100" onClick={this.handleShow}>
+                                {/* <Button id={movie.name+'-'+0} className="w-100" onClick={this.handleShow}>
                                 All Reviews
-                                </Button>
-                                <Button id={movie.name} className="w-100 mt-2" onClick={this.handleShow}>
+                                </Button> */}
+                                <Button id={movie.name} className="w-100" onClick={this.handleShow}>
                                 Review this Title
                                 </Button>
                                 
-                                <Modal show={this.state.show === movie.name+'-'+0} onHide={this.handleClose}>
+                                {/* <Modal show={this.state.show === movie.name+'-'+0} onHide={this.handleClose}>
                                     <Modal.Header closeButton>
                                         <Modal.Title>Reviews for {movie.name}</Modal.Title>
                                     </Modal.Header>
@@ -282,7 +288,7 @@ class Home extends Component{
                                         })}
                                     </ul>
                                     </Modal.Body>
-                                </Modal> 
+                                </Modal>  */}
                                 <Modal show={this.state.show === movie.name} onHide={this.handleClose}>
                                     <Modal.Header closeButton>
                                         <Modal.Title>Add {movie.name}</Modal.Title>

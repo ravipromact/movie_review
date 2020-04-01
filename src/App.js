@@ -4,11 +4,13 @@ import './App.css'
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,Link
 } from "react-router-dom";
 import Registeration from './components/register/register'
 import Login from './components/login/login'
 import Home from './components/home/home';
+import MovieDetails from './components/movie-details/movie-details';
+import PageNotFound from './PageNotFound'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -66,8 +68,8 @@ class App extends Component{
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                   <Nav className="mr-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Nav.Link href="#link">Link</Nav.Link>
+                    <Link to="/" className="nav-link">Home</Link>
+                    <Link to="/register" className="nav-link" >Register</Link>
                   </Nav>
                   <Form inline className="mr-3">
                     <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -95,6 +97,10 @@ class App extends Component{
             {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
             <Switch>
+              <Route path="/register" component={Registeration} />
+              <Route path="/404" component={PageNotFound} />
+              <Route path="/:id" component={MovieDetails} />
+              
               <Route path="/">
                 <Home />
               </Route>
