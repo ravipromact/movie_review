@@ -1,21 +1,14 @@
 import React,{Component}  from 'react';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
 import movies from '../../movies.json'
 import {
     Link
   } from "react-router-dom";
 import './home.css'
-// const movies = [
-//     {id:'Bloodshot',name:'Bloodshot', poster:'bloodshot',year:'2020'},
-//     {id:'Birds_of_Prey',name:'Birds of Prey', poster:'birds_of_prey',year:'2020'},
-//     {id:'1917',name:'1917', poster:'1917',year:'2019'},
-//     {id:'Black_Widow',name:'Black Widow', poster:'black_widow',year:'2020'},
-//     {id:'The_Irishman',name:'The Irishman', poster:'irishman',year:'2019'},
-//     {id:'Jumanji_The_next_Level',name:'Jumanji: The next Level', poster:'jumanji',year:'2019'},
-//     {id:'Justice_League',name:'Justice League', poster:'Justice_league',year:'2017'},
-//     {id:'Shazam',name:'Shazam', poster:'shazam',year:'2019'}
-// ]
+
 
 localStorage.setItem('movies',JSON.stringify(movies))
 class Home extends Component{
@@ -28,7 +21,8 @@ class Home extends Component{
             reviews:[],
             show:null,
             title:'',
-            comment:''
+            comment:'',
+            rating:''
         }
     }
     componentWillMount () {
@@ -48,15 +42,8 @@ class Home extends Component{
     handleReview = (e)=>{
      
         e.preventDefault()
-        let {title,comment,userProfile} = this.state;
-        //alert(reviewData.length)
-        // for(var i=0;i<reviewData.length;i++){
-
-            
-        // }
-
-
-
+        let {title,comment,userProfile,rating} = this.state;
+       
         if(!localStorage.getItem('reviews')){
             let reviews = [ ]
             
@@ -66,177 +53,71 @@ class Home extends Component{
             }else{
                alert('Review added')
                reviews.push({name:e.target.id,reviews:[
-                   {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment}]})
+                   {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment,rating:rating}]})
                 localStorage.setItem('reviews',JSON.stringify(reviews))
                 this.setState({reviews:reviews})
                 console.log('Review added',reviews)
                 this.titleInput.value=''
-                    this.commentInput.value=''
+                this.commentInput.value=''
+                
                 
             }
             
         }else{
             let reviews = this.state.reviews
-            //let reviewContent = this.state.reviews[i].reviews
-                //console.log('Else Review added', reviews[i].email)
             if(this.state.title === '' || this.state.comment === '' ){
                 alert('Please add a review')
                 
             }else{
-                //const result = reviews.filter(word => word).map(el => el.reviews[0].email)
-                
                 var value = e.target.id;
                 if (reviews.filter(e => e.name === value).length > 0) {
-                    /* vendors contains the element we're looking for */
-                    //alert('review Exist for movie '+ value)
                     const result = reviews.filter(item => item.name === value);
                     const found = result[0].reviews.some(el =>{
                         return el.email === userProfile[0].email
                     })
-                    //console.log(result[0].reviews)
                     if(found){
                         alert('review Exist of user '+userProfile[0].email)
                     }else{
                         alert('Review added for movie '+ value)
-                        result[0].reviews.push({reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment})
+                        result[0].reviews.push({reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment,rating:rating})
                         localStorage.setItem('reviews',JSON.stringify(reviews))  
                         this.setState({reviews:reviews})
                         this.titleInput.value=''
                         this.commentInput.value=''
                     }
-               // console.log('user Exist: '+ found)
-                      //console.log(inner)
-                    // if(inner.includes(userProfile[0].email)){
-                    //     alert('review Exist of user '+userProfile[0].email)
-                    // }else{
-                    //     alert('No review of user '+userProfile[0].email)
-                        
-                    //     filteredList[0].reviews.push({reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment})
-                    //     localStorage.setItem('reviews',JSON.stringify(reviews))  
-                    //     this.setState({reviews:reviews})
-                    //     console.log(filteredList[0].reviews)
-                    // }
-                    //console.log(inner.includes(userProfile[0].email) +" "+inner+" contains "+userProfile[0].email);
+
                 }else{
                     alert('Review added for movie '+ value)
                     reviews.push({name:e.target.id,reviews:[
-                    {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment}]})
+                    {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment,rating:rating}]})
                     localStorage.setItem('reviews',JSON.stringify(reviews))  
                     this.setState({reviews:reviews})
                     this.titleInput.value=''
                     this.commentInput.value=''
                     
-                    // if(inner.includes(userProfile[0].email)){
-                    //     alert('review Exist of user '+userProfile[0].email)
-                    // }else{
-                    //     alert('No review of user '+userProfile[0].email)
-                    // }
-                    
                 }
-                //console.log(value)
-                // if(reviews.includes(e.target.id)){
-                //     alert('true')
-                // }else{
-                //     alert('false')
-                // }
-                
-                
-                // if(result.includes(userProfile[0].email)){
-                //     alert('Exist')
-                //     alert(e.target.id)
-                // }else{alert('No exist')}
 
-
-                // var filteredArray = reviews
-                // .filter(element => element.reviews
-                // .some(review => review.email === userProfile[0].email)
-                // )
-                // .map(element => {
-                // let n = element.reviews.filter(
-                //     subElement => subElement.email === userProfile[0].email
-                // )
-                // return n[0].email;
-                // })
-           
-                
-               // for(let j=0;j<reviewContent.length;j++){
-                //    alert(userProfile[0].email +" "+  reviewContent[j].email)
-                //    if(userProfile[0].email !==  reviewContent[j].email){
-                //     reviews.push({name:e.target.id,reviews:[
-                //             {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment}]})
-                //             localStorage.setItem('reviews',JSON.stringify(reviews))  
-                //             this.setState({reviews:reviews})
-                //    }
-                    // if(userProfile[0].email ===  reviewContent[i].email && reviews[i].name === e.target.id){
-                    //     alert("Exist")
-                    //     alert(reviewContent[i].email)
-                    // }else{
-                    //     alert('Not Exist')
-                    //     reviews.push({name:e.target.id,reviews:[
-                    //     {reviewer:userProfile[0].name,email:userProfile[0].email,title:title,comment:comment}]})
-                    //     localStorage.setItem('reviews',JSON.stringify(reviews))  
-                    //     this.setState({reviews:reviews})
-                    // }
-               // }
-                
-
-                // if(userProfile[0].email ===  reviewContent[i].email && reviews[i].name === e.target.id){
-                //     alert('review Exist')
-                // }else{
-                //     if(reviews[i].name === e.target.id){
-                //         alert('review exist')
-                //     }else{
-                //         reviews.push({name:e.target.id,reviews:[{title:title,comment:comment}]})
-                //         localStorage.setItem('reviews',JSON.stringify(reviews))  
-                //         this.setState({reviews:reviews})
-                //     }
-                    
-                // }
-
-
-                // if(reviews[i].name !== e.target.id ){
-                //     if(this.state.title === '' || this.state.comment === '' ){
-                //         alert('Pleas add a review')
-                        
-                //     }else{
-                //         alert('Review Added')
-                //         reviews.push({name:e.target.id,reviews:[{title:title,comment:comment}]})                    
-                //         localStorage.setItem('reviews',JSON.stringify(reviews))  
-                //         this.setState({reviews:reviews})
-                //     }
-                    
-                // }else{
-                //     alert('Review already exist')
-                // }
             }
-            
-            
-            
+  
         }
-        
 
-
-        
-
-        // for(var i = 0; i< this.state.reviews.length;i++){
-        //     let {reviews} = this.state
-        //     if(reviews[i].name === e.target.id){
-        //         alert(' working')  
-        //         reviews[i].reviews.push({title:title,comment:comment})
-        //         localStorage.setItem('reviews',JSON.stringify(reviews))
-        //     }
-        // }
     }
     handleChange = (e)=>{
         const {name,value} = e.target;
         this.setState({[name]:value})
+        console.log(name,value)
     }
-    render(){
-        // if(this.state.reviews[0].name ==='Birds of Prey'){
-        //     console.log(this.state.reviews[0].reviews)
-        // }
+    handleRating = (e)=>{
+        //const {name,value} = e.target;
+        //this.setState({rating:e.target.value})
+
+        this.setState({ rating: e.target.value }, () => 
+        console.log(this.state.rating));
         
-        
+        console.log(this.state.rating)
+        //console.log(name,value)
+    }
+    render(){        
         return(
             <div className="container section-pad" ref={this.wrapper}>
                 <h2 className="text-white">Movies</h2>
@@ -300,7 +181,26 @@ class Home extends Component{
                                         </div>
                                         <div className="form-group">
                                             <textarea rows="4" ref={commentInput => this.commentInput = commentInput} name="comment" onChange={this.handleChange} className="form-control" placeholder="Comment..."></textarea>
+                                            <div className="rating-box">
+                                                <div className="rating-container">
+                                                    <input type="radio" name="rating" onChange={this.handleRating} value="5" id={`${i}star-5`} /> 
+                                                    <label htmlFor={`${i}star-5`}><FontAwesomeIcon icon={faStar} /></label>
+                                                    
+                                                    <input type="radio" name="rating" onChange={this.handleRating} value="4" id="star-4" /> 
+                                                    <label htmlFor="star-4"><FontAwesomeIcon icon={faStar} /></label>
+                                                    
+                                                    <input type="radio" name="rating" onChange={this.handleRating} value="3" id="star-3" /> 
+                                                    <label htmlFor="star-3"><FontAwesomeIcon icon={faStar} /></label>
+                                                    
+                                                    <input type="radio" name="rating" onChange={this.handleRating} value="2" id="star-2" /> 
+                                                    <label htmlFor="star-2"><FontAwesomeIcon icon={faStar} /></label>
+                                                    
+                                                    <input type="radio" name="rating" onChange={this.handleRating} value="1" id="star-1" /> 
+                                                    <label htmlFor="star-1"><FontAwesomeIcon icon={faStar} /></label>
+                                                </div>                                                
+                                            </div>
                                         </div>
+                                        
                                         <button type="submit" className="btn btn-primary">Submit</button>
                                     </form>
                                     </Modal.Body>

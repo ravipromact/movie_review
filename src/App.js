@@ -20,32 +20,54 @@ import FormControl from 'react-bootstrap/FormControl'
 class App extends Component{
 
   constructor(props){
+
     super(props)
     this.state={
       isLoggedIn:JSON.parse(localStorage.getItem('isLoggedIn')),
-      userProfile:JSON.parse(localStorage.getItem('userProfile'))
+      //userProfile:JSON.parse(localStorage.getItem('userProfile'))
     }
     this.handleLoggin = this.handleLoggin.bind(this)
   }
+  
  
-  handleLoggin(val){
+  handleLoggin(val,user){
+    alert('Login')
+    //console.log(user[0].name)
+    //let profile = [{name:user[0].name,email:user[0].email}]
+    //localStorage.setItem('userProfile',JSON.stringify(userName))
     this.setState({
-      isLoggedIn:val
+      isLoggedIn:val,
+      //userProfile:localStorage.setItem('userProfile',JSON.stringify(profile))
     })
+    
+    
+    //console.log(this.state.userProfile)
+
+    //alert(JSON.stringify(this.state.userProfile))
+    
+  //  alert('userprofile from state'+ JSON.stringify(this.state.userProfile))
+  //   alert('user var'+ JSON.stringify(user))
+  
   }
   signOut = ()=>{
     localStorage.setItem('isLoggedIn',JSON.stringify(false))
-    let profile = [{name:"",email:""}]
-    //localStorage.setItem('userProfile',JSON.stringify(profile))
+    //let profile = [{name:"",email:""}]
+    
     this.setState({
-      isLoggedIn:false
+      isLoggedIn:false,
+      //userProfile:localStorage.setItem('userProfile',JSON.stringify(profile))
     })
+   // alert(this.state.userProfile)
   }
 
   render(){
-    const {userProfile} = this.state
-    //alert(JSON.stringify(userProfile))
-    //alert(JSON.stringify(this.state.userProfile))
+   // const {userProfile} = this.state
+    // if(userProfile){
+    //   alert(userProfile.length !== 0)
+    // }
+    const userprofile = JSON.parse(localStorage.getItem('userProfile'))
+
+    //console.log(this.state.userProfile)
     return (
       <div className="App">
         {this.state.isLoggedIn?
@@ -84,8 +106,11 @@ class App extends Component{
 
                     <Dropdown.Menu alignRight>
                       <div className="px-3">
-                        {/* <p className="mb-0">{userProfile[0].name}</p>
-                        <small>{userProfile[0].email}</small> */}
+                      {/* <Welcome name={userProfile[0].name} /> */}
+                        <div>
+                          <p className="mb-0">{userprofile[0].name}</p>
+                          <small>{userprofile[0].email}</small>
+                        </div>
                       </div>
                       <Dropdown.Item onClick={this.signOut}>Sign out</Dropdown.Item>
                     </Dropdown.Menu>

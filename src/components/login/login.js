@@ -43,12 +43,16 @@ class Login extends Component{
                     var userName =[]
                     userName.push({name: el.name,email:el.email})                    
                     localStorage.setItem('userProfile',JSON.stringify(userName))
+                    //alert('local storage set')
+                    //alert(JSON.stringify(JSON.parse(localStorage.getItem('userProfile'))))
                 }  
              })
             //localStorage.setItem('userProfile',userName)
             var loggedIn = localStorage.getItem('isLoggedIn')
-            this.props.triggerUpdate(loggedIn);
-            alert('Log in Success')
+            var who = JSON.parse(localStorage.getItem('userProfile'))
+            this.props.triggerUpdate(loggedIn,who);
+            
+            //console.log( )
         }else{
             alert('Invalid Credential')
         }
