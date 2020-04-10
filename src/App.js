@@ -14,9 +14,9 @@ import PageNotFound from './PageNotFound'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import Dropdown from 'react-bootstrap/Dropdown'
-import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
+import ListGroup from 'react-bootstrap/ListGroup'
 class App extends Component{
 
   constructor(props){
@@ -24,6 +24,8 @@ class App extends Component{
     super(props)
     this.state={
       isLoggedIn:JSON.parse(localStorage.getItem('isLoggedIn')),
+      movies:JSON.parse(localStorage.getItem('movies')),
+      search:'',
       //userProfile:JSON.parse(localStorage.getItem('userProfile'))
     }
     this.handleLoggin = this.handleLoggin.bind(this)
@@ -32,22 +34,12 @@ class App extends Component{
  
   handleLoggin(val,user){
     alert('Login')
-    //console.log(user[0].name)
-    //let profile = [{name:user[0].name,email:user[0].email}]
-    //localStorage.setItem('userProfile',JSON.stringify(userName))
     this.setState({
-      isLoggedIn:val,
-      //userProfile:localStorage.setItem('userProfile',JSON.stringify(profile))
+      isLoggedIn:val
     })
-    
-    
-    //console.log(this.state.userProfile)
-
-    //alert(JSON.stringify(this.state.userProfile))
-    
-  //  alert('userprofile from state'+ JSON.stringify(this.state.userProfile))
-  //   alert('user var'+ JSON.stringify(user))
-  
+  }
+  updateSearch = (e)=>{
+    this.setState({search:e.target.value.substr(0,20)})        
   }
   signOut = ()=>{
     localStorage.setItem('isLoggedIn',JSON.stringify(false))
@@ -61,13 +53,10 @@ class App extends Component{
   }
 
   render(){
-   // const {userProfile} = this.state
-    // if(userProfile){
-    //   alert(userProfile.length !== 0)
-    // }
     const userprofile = JSON.parse(localStorage.getItem('userProfile'))
-
-    //console.log(this.state.userProfile)
+    let filteredList = this.state.movies.filter((movie)=>{
+      return movie.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+    }) 
     return (
       <div className="App">
         {this.state.isLoggedIn?
@@ -93,9 +82,34 @@ class App extends Component{
                     <Link to="/" className="nav-link">Home</Link>
                     <Link to="/register" className="nav-link" >Register</Link>
                   </Nav>
-                  <Form inline className="mr-3">
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="primary">Search</Button>
+                  <Form inline className="mr-3 position-relative">
+                    <FormControl type="text" value={this.state.search} onChange={this.updateSearch} placeholder="Search"/>
+                    {this.state.search !=='' && 
+                    <ListGroup className="px-2 pb-2">
+                        <div className="innerMenu">
+                        {filteredList.map((movie,i) => {
+                            return(
+                                
+                                    <Link className="movielink pt-2 d-block text-white text-decoration-none" to={{pathname:`${movie.id}`,aboutProps:this.state.movies[i]}} key={movie.name}>
+                                        <div className="media">
+                                        <img src={require(`././assests/img/${movie.poster}.jpg`)} alt='movie poster' className=" rounded" width="70" height="80" />
+                                        <div className="media-body pl-2">
+                                            <h6 className="mb-1">{movie.name} ({movie.year})</h6> 
+                                        </div>
+                                        </div>
+                                    </Link>
+                            )
+                        })}
+                        </div>
+                    </ListGroup>
+                    }
+                    {/* <ListGroup>
+                      <ListGroup.Item>Cras justo odio</ListGroup.Item>
+                      <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+                      <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+                      <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+                      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                    </ListGroup> */}
                   </Form>
 
                   <Dropdown>
